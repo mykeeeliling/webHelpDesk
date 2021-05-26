@@ -6,8 +6,8 @@ import com.example.webHelpDesk.domain.entity.Employee;
 import java.util.List;
 
 public interface EmployeeService {
-    List<EmployeeDto> view(Long employeeNumber);
-    List<EmployeeDto> list();
+    Employee view(Long employeeNumber);
+    List<Employee> list();
     EmployeeDto create(EmployeeDto employeeDto);
 //    EmployeeDto update(Long employeeNumber, EmployeeDto employee);
 }

@@ -10,7 +10,7 @@ public class EmployeeDto {
     private String firstName;
     private String middleName;
     private String lastName;
-    private String fullName;
+//    private String fullName;
     private Department department;
     private Ticket ticket;
 
@@ -70,12 +70,12 @@ public class EmployeeDto {
         this.ticket = ticket;
     }
 
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String firstName, String middleName, String lastName) {
-        this.fullName = firstName +" " + middleName + " " +lastName;
-    }
+//    public String getFullName() {
+//        return fullName;
+//    }
+//
+//    public void setFullName(String firstName, String middleName, String lastName) {
+//        this.fullName = firstName +" " + middleName + " " +lastName;
+//    }
 
 }

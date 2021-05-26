@@ -4,17 +4,16 @@ import com.example.webHelpDesk.domain.dto.EmployeeDto;
 import com.example.webHelpDesk.domain.entity.Employee;
 import com.example.webHelpDesk.repository.EmployeeRepository;
 import com.example.webHelpDesk.service.EmployeeService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-
-    EmployeeDto employeeDto = new EmployeeDto();
-    Employee employee = new Employee();
 
     @Autowired
     private final EmployeeRepository employeeRepository;
@@ -24,48 +23,42 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeDto> view(Long employeeNumber){
+    public Employee view(Long employeeNumber){
         Employee employee = employeeRepository.findByEmployeeNumber(employeeNumber);
         if (employee == null){
             throw new IllegalStateException("Employee Number "+ employeeNumber + " does not exist");
         } else {
-            employeeDto.setFirstName(employee.getFirstName());
-            employeeDto.setMiddleName(employee.getMiddleName());
-            employeeDto.setLastName(employee.getLastName());
-            employeeDto.setEmployeeNumber(employee.getEmployeeNumber());
-//            employeeDto.setFullName(employee.getFirstName(), employee.getMiddleName(), employee.getLastName());
-            employeeDto.setDepartment(employee.getDepartment());
-            List<EmployeeDto> employeeDetails = new ArrayList<>();
-            employeeDetails.add(employeeDto);
-
-            return employeeDetails;
+            return employee;
         }
     }
 
     @Override
-    public List<EmployeeDto> list() {
+    public List<Employee> list() {
         List<Employee> employeeList = employeeRepository.findAll();
         if (employeeList.isEmpty()){
             throw new IllegalStateException("Employee list is empty");
         }
-        return null;
+        return employeeList;
     }
 
     @Override
-    public EmployeeDto create(EmployeeDto employeeDto) {
-        boolean employeeNumberExists = employeeRepository.existsByEmployeeNumber(employeeDto.getEmployeeNumber());
-        if (employeeNumberExists){
+        public EmployeeDto create(EmployeeDto employeeDto) {
+        Employee employee = employeeRepository.findByEmployeeNumber(employeeDto.getEmployeeNumber());
+
+        if (employee != null){
             throw new IllegalStateException("Employee Number "+ employeeDto.getEmployeeNumber()+ " already exist");
         }
          else {
+             employee = new Employee();
             employee.setEmployeeNumber(employeeDto.getEmployeeNumber());
             employee.setFirstName(employeeDto.getFirstName());
             employee.setMiddleName(employeeDto.getMiddleName());
             employee.setLastName(employeeDto.getLastName());
             employee.setDepartment(employeeDto.getDepartment());
             employeeRepository.save(employee);
+            employeeDto.setId(employee.getId());
         }
-        return ;
+        return employeeDto;
     }
 //
 //    @Override
