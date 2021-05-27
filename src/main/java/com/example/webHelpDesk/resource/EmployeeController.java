@@ -22,7 +22,7 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @GetMapping(path = "/list")
-    private ResponseEntity<Employee> list(){
+    private ResponseEntity<EmployeeDto> list(){
         return new ResponseEntity(employeeService.list()
                 .stream().map(employee -> modelMapper.map(employee, EmployeeDto.class))
                 .collect(Collectors.toList())
@@ -38,14 +38,49 @@ public class EmployeeController {
         return ResponseEntity.ok().body(employeeDto);
     }
 
-    @PostMapping(path = "/create")
+    @PostMapping
     private ResponseEntity<EmployeeDto> create(@RequestBody EmployeeDto employeeDto){
-        return ResponseEntity.ok(employeeService.create(employeeDto));
+
+        // Convert Dto -> Entity
+        Employee employeeRequest = modelMapper.map(employeeDto, Employee.class);
+
+        // Save data to DB using create method()
+        // passing converted Dto -> entity as parameter
+        Employee employee = employeeService.create(employeeRequest);
+
+        // Convert back from Entity -> Dto
+        // for returning values to the front end
+        EmployeeDto employeeResponse = modelMapper.map(employee, EmployeeDto.class);
+
+        return new ResponseEntity<EmployeeDto>(employeeResponse, HttpStatus.CREATED);
     }
 
-//    @PutMapping(path = "/{employeeNumber}")
-//    private ResponseEntity<Employee> update(@PathVariable(name = "employeeNumber") Long employeeNumber,
-//                                            @RequestBody Employee employee){
-//        return ResponseEntity.ok(employeeService.update(employee));
-//    }
+    @PutMapping(path = "/{employeeNumber}")
+    private ResponseEntity<EmployeeDto> update(@PathVariable(name = "employeeNumber") Long employeeNumber,
+                                                @RequestBody EmployeeDto employeeDto){
+        // Convert Dto -> Entity
+        Employee employeeRequest = modelMapper.map(employeeDto, Employee.class);
+
+        // Save data to DB using create method()
+        // passing converted Dto -> entity as parameter
+        Employee employee = employeeService.update(employeeNumber, employeeRequest);
+
+        // Convert back from Entity -> Dto
+        // for returning values to the front end
+        EmployeeDto employeeResponse = modelMapper.map(employee, EmployeeDto.class);
+
+        return ResponseEntity.ok().body(employeeResponse);
+    }
+
+    @DeleteMapping(path = "/{employeeNumber}")
+    private ResponseEntity delete(@PathVariable(name = "employeeNumber") Long employeeNumber){
+        employeeService.delete(employeeNumber);
+        return new ResponseEntity("",HttpStatus.NO_CONTENT);
+    }
+    
+    @PutMapping(path = "/{employeeNumber}/ticket/{ticketNumber}")
+    private void assignTicket(@PathVariable(name = "employeeNumber") Long employeeNumber,
+                              @PathVariable(name = "ticketNumber")Long ticketNumber){
+        employeeService.assignTicket(employeeNumber, ticketNumber);
+    }
 }

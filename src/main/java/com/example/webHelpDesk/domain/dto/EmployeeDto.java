@@ -5,22 +5,12 @@ import com.example.webHelpDesk.domain.reference.Department;
 
 
 public class EmployeeDto {
-    private Long id;
     private Long employeeNumber;
     private String firstName;
     private String middleName;
     private String lastName;
-//    private String fullName;
     private Department department;
     private Ticket ticket;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Long getEmployeeNumber() {
         return employeeNumber;
@@ -69,13 +59,5 @@ public class EmployeeDto {
     public void setTicket(Ticket ticket) {
         this.ticket = ticket;
     }
-
-//    public String getFullName() {
-//        return fullName;
-//    }
-//
-//    public void setFullName(String firstName, String middleName, String lastName) {
-//        this.fullName = firstName +" " + middleName + " " +lastName;
-//    }
 
 }

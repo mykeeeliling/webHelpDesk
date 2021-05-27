@@ -42,7 +42,7 @@ public class Employee {
     private Department department;
 
     @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "ticket_number")
     private Ticket ticket;
 

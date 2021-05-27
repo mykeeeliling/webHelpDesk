@@ -8,6 +8,8 @@ import java.util.List;
 public interface EmployeeService {
     Employee view(Long employeeNumber);
     List<Employee> list();
-    EmployeeDto create(EmployeeDto employeeDto);
-//    EmployeeDto update(Long employeeNumber, EmployeeDto employee);
+    Employee create(Employee Employee);
+    Employee update(Long employeeNumber, Employee employee);
+    void delete(Long employeeNumber);
+    void assignTicket(Long employeeNumber, Long ticketNumber);
 }

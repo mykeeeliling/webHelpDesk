@@ -4,6 +4,9 @@ import javax.persistence.*;
 import com.example.webHelpDesk.domain.reference.Severity;
 import com.example.webHelpDesk.domain.reference.Status;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity(name = "Ticket")
 @Table(name = "ticket")
 public class Ticket {
@@ -15,6 +18,7 @@ public class Ticket {
     )
     private Long ticketNumber;
 
+    @Column(nullable = false)
     private String title;
 
     @Column(
@@ -23,14 +27,24 @@ public class Ticket {
     )
     private String description;
 
+
     @Enumerated
+    @Column(nullable = false)
     private Severity severity;
 
     @Enumerated
+    @Column(nullable = false)
     private Status status;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "ticket")
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "ticket")
     private Employee assignee;
+
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "watchers",
+            joinColumns = {@JoinColumn(name = "ticketNumber")},
+            inverseJoinColumns = {@JoinColumn(name = "employeeNumber")})
+    private List<Employee> watchers = new ArrayList<>();
 
     public Ticket() {
     }
@@ -81,5 +95,13 @@ public class Ticket {
 
     public void setAssignee(Employee assignee) {
         this.assignee = assignee;
+    }
+
+    public List<Employee> getWatchers() {
+        return watchers;
+    }
+
+    public void setWatchers(List<Employee> watchers) {
+        this.watchers = watchers;
     }
 }
