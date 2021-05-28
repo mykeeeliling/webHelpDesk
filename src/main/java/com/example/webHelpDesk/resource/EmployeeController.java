@@ -21,7 +21,7 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    @GetMapping(path = "/list")
+    @GetMapping
     private ResponseEntity<EmployeeDto> list(){
         return new ResponseEntity(employeeService.list()
                 .stream().map(employee -> modelMapper.map(employee, EmployeeDto.class))

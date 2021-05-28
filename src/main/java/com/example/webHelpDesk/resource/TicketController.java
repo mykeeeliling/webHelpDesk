@@ -36,7 +36,7 @@ public class TicketController {
         return ResponseEntity.ok().body(ticketDto);
     }
 
-    @GetMapping(path = "list")
+    @GetMapping
     private ResponseEntity<TicketDto> list() {
         return new ResponseEntity(ticketService.list()
                 .stream().map(ticket -> modelMapper.map(ticket, TicketDto.class))
