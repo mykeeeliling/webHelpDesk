@@ -30,7 +30,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/{employeeNumber}").hasRole("ADMIN")
                 .antMatchers("/ticket").hasAnyRole("USER","ADMIN")
                 .antMatchers("/{ticketNumber}").hasRole("ADMIN")
-                .and().formLogin();
+                .anyRequest().authenticated()
+                .and().httpBasic();
     }
 
     @Bean

@@ -20,8 +20,6 @@ dependencies {
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.4.3'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.4.6'
 
-
-
 }
 
 test {
