@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,6 +45,7 @@ public class TicketController {
                 , HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
     private ResponseEntity<TicketDto> create(@RequestBody TicketDto ticketDto){
 
@@ -61,6 +63,7 @@ public class TicketController {
         return new ResponseEntity<TicketDto>(ticketResponse, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping(path = "/{ticketNumber}")
     private ResponseEntity<TicketDto> update(@PathVariable("ticketNumber") Long ticketNumber,
                                              @RequestBody TicketDto ticketDto){
@@ -79,12 +82,14 @@ public class TicketController {
         return new ResponseEntity<TicketDto>(ticketResponse, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping(path = "/{ticketNumber}")
     private ResponseEntity delete(@PathVariable(name = "ticketNumber") Long ticketNumber){
         ticketService.delete(ticketNumber);
         return new ResponseEntity("",HttpStatus.NO_CONTENT);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping(path = "/{ticketNumber}/watcher/{employeeNumber}")
     private ResponseEntity<TicketDto> assignWatcher(@PathVariable(name = "employeeNumber")Long employeeNumber,
                                                     @PathVariable(name = "ticketNumber")Long ticketNumber){
